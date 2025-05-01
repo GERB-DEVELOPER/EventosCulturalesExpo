@@ -27,37 +27,37 @@ const HomeScreen = ({ navigation, eventos = eventosDataDefault }) => {
     <SafeAreaView style={styles.container}>
       <Text style={styles.titulo}>Eventos Culturales</Text>
 
-      {/* Filtro de categorías */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.categoriasContainer}
-        contentContainerStyle={{ alignItems: "center", height: 40 }} // Añade esta línea
+{/* ───── Contenedor fijo de categorías ───── */}
+<View style={styles.categoriasWrapper}>
+  <ScrollView
+    horizontal
+    showsHorizontalScrollIndicator={false}
+    contentContainerStyle={styles.categoriasContent}
+    style={styles.categoriasScroll}  
+  >
+    {categorias.map((categoria) => (
+      <TouchableOpacity
+        key={categoria}
+        style={[
+          styles.categoriaBoton,
+          categoriaSeleccionada === categoria && styles.categoriaSeleccionada,
+        ]}
+        onPress={() => setCategoriaSeleccionada(categoria)}
       >
-        {categorias.map((categoria) => (
-          <TouchableOpacity
-            key={categoria}
-            style={[
-              styles.categoriaBoton,
-              categoriaSeleccionada === categoria &&
-                styles.categoriaSeleccionada,
-            ]}
-            onPress={() => setCategoriaSeleccionada(categoria)}
-          >
-            <Text
-              style={[
-                styles.categoriaTexto,
-                categoriaSeleccionada === categoria &&
-                  styles.categoriaTextoSeleccionado,
-              ]}
-            >
-              {categoria}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-
-      {/* Lista de eventos */}
+        <Text
+          style={[
+            styles.categoriaTexto,
+            categoriaSeleccionada === categoria &&
+              styles.categoriaTextoSeleccionado,
+          ]}
+        >
+          {categoria}
+        </Text>
+      </TouchableOpacity>
+    ))}
+  </ScrollView>
+</View>
+{/* ────────────────────────────────────── */}
       <FlatList
         data={eventosFiltrados}
         keyExtractor={(item) => item.id}
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // backgroundColor: "#f8f9fa",
-    backgroundColor: "#e056fd", //fuccia
+    backgroundColor: "#E7F1FF", //fuccia
   },
   titulo: {
     fontSize: 24,
@@ -107,19 +107,26 @@ const styles = StyleSheet.create({
     margin: 16,
     color: "#212529",
   },
-  categoriasContainer: {
-    backgroundColor: "#f9ca24", // amarillo
-    paddingHorizontal: 16,
-    //marginBottom: 16,
-    height: 130,
+  categoriasWrapper: {
+    backgroundColor: "#17A2B8",
+    height: 80,            // altura inamovible
+    paddingHorizontal: 10, // tu padding
+  },
+  categoriasScroll: {
+    flex: 1,               // llena esos 80px completos
+  },
+  categoriasContent: {
+    flexGrow: 1,           // que el contenido llene el Scroll
+    alignItems: "center",  // centra verticalmente
+    justifyContent: "center",
   },
   categoriaBoton: {
+    height: 36,
     paddingHorizontal: 16,
-    paddingVertical: 8,
-    marginRight: 12, // Aumentamos el margen entre botones
+    marginRight: 12,
     borderRadius: 20,
     backgroundColor: "#e9ecef",
-   // height: 36, // Altura fija para todos los botones
+    justifyContent: "center",
   },
   categoriaSeleccionada: {
     backgroundColor: "#4263eb",
@@ -134,7 +141,7 @@ const styles = StyleSheet.create({
   lista: {
     paddingHorizontal: 16,
     marginTop: 10, // Añadimos un pequeño margen superior a la lista
-    backgroundColor: "#6ab04c", // verde
+    backgroundColor: "#f8f9fa", // verde
   },
   tarjetaEvento: {
     flexDirection: "row",
